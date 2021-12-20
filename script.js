@@ -1,8 +1,10 @@
 window.onload = function () {
   btnBoardSize.addEventListener('click', setBoardSize);
   btnClearPixels.addEventListener('click', clearGrade);
+  btnGenerateColors.addEventListener('click', generateColorPallete)
   let firstColor = document.querySelector('.color')
   firstColor.classList.add('selected') // requisito 7
+
   for (let color of colors) {
     color.addEventListener('click', selectColor);
   }
@@ -22,11 +24,11 @@ function updatePixels() {
 
 let colors = document.getElementsByClassName('color');
 let pixels = document.querySelectorAll('.pixel');
-let btnClearPixels = document.getElementById('clear-board');
 let inputBoardSize = document.getElementById('board-size');
+let btnClearPixels = document.getElementById('clear-board');
 let btnBoardSize = document.getElementById('generate-board');
+let btnGenerateColors = document.getElementById('generate-colors')
 let pixelBoardElement = document.querySelector('#pixel-board');
-
 function setBoardSize(number) {
   if(inputBoardSize.value < 5 && inputBoardSize.value !== ""){
     inputBoardSize.value = 5;
@@ -73,12 +75,17 @@ function paintPixel(pixel) {
   let selectedColor = document.querySelector('.selected');
   style = window.getComputedStyle(selectedColor); // referencia: https://stackoverflow.com/questions/25238153/how-to-get-background-color-property-value-in-javascript/25238247
   // a linha acima basicamente atribui a variavel style todo o css referente ao elemento passado como parametro, no caso selectedColor
-  pixel.target.style.backgroundColor = style.backgroundColor; // atribuindo a cor selecionada à cor de fundo do pixel clicado
+  if(style.backgroundColor === pixel.target.style.backgroundColor){// se o pixel já estiver colorido
+    pixel.target.style.backgroundColor = '' //deixando o pixel selecionado vazio
+  } else{
+    pixel.target.style.backgroundColor = style.backgroundColor; // atribuindo a cor selecionada à cor de fundo do pixel clicado
+  }
+
 }
 
 function clearGrade() {
   for (let pixel of pixels) {
-    pixel.style.backgroundColor = 'white';
+    pixel.style.backgroundColor = '';
   }
 }
 
@@ -99,3 +106,4 @@ function getRandomColor() { // Source: https://stackoverflow.com/questions/14845
   }
   return generatedColor;
 }
+
